@@ -1,0 +1,90 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title messages chat widget - Bootdey.com
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(href='/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/plugins/color-picker/css/colorpicker.css', rel='stylesheet', media='screen', type='text/css')
+    link(href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', rel='stylesheet')
+    link(href='css/index.css', rel='stylesheet')
+  body
+    .container
+      .col-md-12
+        .panel
+          // Heading
+          .panel-heading
+            .panel-control
+              .btn-group
+                button.btn.btn-default(type='button', data-toggle='dropdown')
+                  i.fa.fa-gear
+                ul.dropdown-menu.dropdown-menu-right
+                  li
+                    a#change-text-color(href='#') Change Text Color               
+                  li
+                    a#btn-logout(href='#') Logout
+                    form#logout(action='/logout', method='post')
+                      input(type='hidden', name='username', value=username)
+            h3.panel-title Chat
+          // Widget body
+          #demo-chat-body.collapse.in
+            .nano.has-scrollbar(style='height:380px')
+              .nano-content.pad-all(tabindex='0', style='right: -17px;')
+                ul.list-unstyled.media-block
+                  each messageArray, time in messages
+                      each message, index in messageArray
+                            if message.username == username
+                              li.mar-btm
+                                .media-left
+                                  img.img-circle.img-sm(src='http://bootdey.com/img/Content/avatar/avatar1.png', alt='Profile Picture')
+                                .media-body.pad-hor
+                                  .speech.speech-me
+                                    p.media-heading #{message.username}
+                                      a.fa.fa-times.fa-1.remove-message(data-time=time)
+                                    p #{message.message}
+                                    p.speech-time
+                                      i.fa.fa-clock-o.fa-fw
+                                      | #{message.time}
+                            else
+                              li.mar-btm
+                                .media-right
+                                  img.img-circle.img-sm(src='http://bootdey.com/img/Content/avatar/avatar2.png', alt='Profile Picture')
+                                .media-body.pad-hor.speech-right
+                                  .speech
+                                    p.media-heading(data-time=time) #{message.username}
+                                    p #{message.message}
+                                    p.speech-time
+                                      i.fa.fa-clock-o.fa-fw
+                                      |  #{message.time}
+              .nano-pane
+                .nano-slider(style='height: 141px; transform: translate(0px, 0px);')
+            // Widget footer
+            .panel-footer
+              .row
+                .col-xs-9
+                  input.form-control.chat-input(type='text', placeholder='Enter your text')
+                .col-xs-3
+                  button.btn.btn-primary.btn-block.btn-send(type='submit') Send              
+    .modal.fade#color-modal(tabindex='-1', role='dialog')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+            h4.modal-title Choose text color you want
+          .modal-body
+            #color-picker-holder
+            input(id='text-color', type='hidden')
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Close
+            button.btn.btn-primary#save-text-color(type='button') Save changes
+    script(src='/jquery/jquery.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
+    script(src='/plugins/color-picker/js/colorpicker.js')
+    script(type='text/javascript').
+      var socket = io();
+      var currentUserName = '#{username}';
+      const defaultTextColor = 'black';
+      let preferedColor = '#{textColor}' == 'undefined' ? defaultTextColor : '#{textColor}';
+    script(src='/js/index.js')

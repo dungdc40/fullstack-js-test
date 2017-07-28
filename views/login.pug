@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    title Material Design Login Form
+    link(rel='stylesheet', href='/css/login.css', type='text/css')
+  body
+    hgroup
+      h1 Global Chat Room
+    form(action='/', method='post')
+      if error
+          .login-error #{error}
+      .group
+        input(type='text', name='username')
+        span.highlight
+        span.bar
+        label Name
+      button.button.buttonBlue(type='submit')
+        | Join Chat Room
+        .ripples.buttonRipples
+          span.ripplesCircle
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+    script(src='/js/login.js')
